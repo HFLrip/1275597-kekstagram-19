@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Игорь](https://up.htmlacademy.ru/javascript/19/user/1275597).
-* Наставник: `Неизвестно`.
+* Наставник: Дмитрий Быков (https://htmlacademy.ru/profile/id618225).
 
 ---
 
