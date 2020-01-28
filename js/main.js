@@ -7,7 +7,7 @@ var photoDescriptions = [];
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-var x = getRandomNumber(0, 2);
+
 
 var getComment = function () {
   var avatar = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
@@ -19,12 +19,9 @@ var getComment = function () {
   return comment;
 };
 var generatePhotoDescription = function () {
-  for (var b = 0; b < x; b++) {
-    if (x === 0) {
-      comments[b] = comments;
-    } else {
-      comments[b] = getComment();
-    }
+
+  for (var b = 0; b < getRandomNumber(0, 3); b++) {
+    comments[b] = getComment();
   }
   var url = 'photos/' + (i + 1) + '.jpg';
   var element = {
