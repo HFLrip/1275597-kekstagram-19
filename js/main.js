@@ -2,13 +2,10 @@
 var quntityOfDescriptions = 25;
 var namesOfCommentator = ['Артем', 'Коля', 'Dima', 'Petr'];
 var messages = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
-var comments = [];
 var photoDescriptions = [];
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-
-
 var getComment = function () {
   var avatar = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
   var comment = {
@@ -18,12 +15,12 @@ var getComment = function () {
   };
   return comment;
 };
-var generatePhotoDescription = function () {
-
+var generatePhotoDescription = function (count) {
+  var comments = [];
   for (var b = 0; b < getRandomNumber(0, 3); b++) {
     comments[b] = getComment();
   }
-  var url = 'photos/' + (i + 1) + '.jpg';
+  var url = 'photos/' + (count + 1) + '.jpg';
   var element = {
     url: url,
     description: 'описание фотографии',
@@ -33,7 +30,7 @@ var generatePhotoDescription = function () {
   return element;
 };
 for (var i = 0; i < quntityOfDescriptions; i++) {
-  photoDescriptions [i] = generatePhotoDescription();
+  photoDescriptions [i] = generatePhotoDescription(i);
 }
 var photoList = document.querySelector('.pictures'); // контейнер для фото по классу
 
