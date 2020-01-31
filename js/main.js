@@ -1,7 +1,9 @@
 'use strict';
-var QUANTITYOFDESCRIPTIONS = 25;
-var MINNUMBOFLIKES = 15;
-var MAXNUMBOFLIKES = 200;
+var QUANTITY_OF_DESCRIPTIONS = 25;
+var MIN_NUMB_OF_LIKES = 15;
+var MAX_NUMB_OF_LIKES = 200;
+var MAX_AVAILABLE_QUANT_OF_AVATARS = 6;
+var MAX_QUANT_OF_COMMENTS = 3;
 
 var namesOfCommentator = ['Артем', 'Коля', 'Dima', 'Petr'];
 var messages = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
@@ -10,7 +12,7 @@ var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 var getComment = function () {
-  var avatar = 'img/avatar-' + getRandomNumber(1, messages.length) + '.svg';
+  var avatar = 'img/avatar-' + getRandomNumber(1, MAX_AVAILABLE_QUANT_OF_AVATARS) + '.svg';
   var comment = {
     avatar: avatar,
     message: messages[getRandomNumber(0, messages.length - 1)],
@@ -20,19 +22,19 @@ var getComment = function () {
 };
 var generatePhotoDescription = function (count) {
   var comments = [];
-  for (var i = 0; i < getRandomNumber(0, namesOfCommentator.length - 1); i++) {
+  for (var i = 0; i < getRandomNumber(0, MAX_QUANT_OF_COMMENTS); i++) {
     comments[i] = getComment();
   }
   var url = 'photos/' + (count + 1) + '.jpg';
   var element = {
     url: url,
     description: 'описание фотографии',
-    likes: getRandomNumber(MINNUMBOFLIKES, MAXNUMBOFLIKES),
+    likes: getRandomNumber(MIN_NUMB_OF_LIKES, MAX_NUMB_OF_LIKES),
     comments: comments,
   };
   return element;
 };
-for (var i = 0; i < QUANTITYOFDESCRIPTIONS; i++) {
+for (var i = 0; i < QUANTITY_OF_DESCRIPTIONS; i++) {
   photoDescriptions [i] = generatePhotoDescription(i);
 }
 var photoList = document.querySelector('.pictures'); // контейнер для фото по классу
@@ -75,13 +77,13 @@ for (var k = 0; k < photoDescriptions[0].comments.length; k++) {
 }
 var blocks = document.querySelectorAll('.social__comment-count');
 var newComments = document.querySelectorAll('.comments-loader');
-var addClass = function (classes) {
-  for (var l = 0; l < classes.length; l++) {
-    classes[l].classList.add('hidden');
+var hideElements = function (elements) {
+  for (var l = 0; l < elements.length; l++) {
+    elements[l].classList.add('hidden');
   }
 };
-addClass(newComments);
-addClass(blocks);
+hideElements(newComments);
+hideElements(blocks);
 var modalOpen = document.querySelector('body');
 modalOpen.classList.add('modal-open');
 
