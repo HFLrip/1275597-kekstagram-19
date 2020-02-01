@@ -4,6 +4,9 @@ var MIN_NUMB_OF_LIKES = 15;
 var MAX_NUMB_OF_LIKES = 200;
 var MAX_AVAILABLE_QUANT_OF_AVATARS = 6;
 var MAX_QUANT_OF_COMMENTS = 3;
+var ESC_KEY = 'Escape';
+var SCALE_STEP = 25;
+var SCALE_DEFAULT = 100;
 
 var namesOfCommentator = ['Артем', 'Коля', 'Dima', 'Petr'];
 var messages = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
@@ -84,7 +87,49 @@ var hideElements = function (elements) {
 };
 hideElements(newComments);
 hideElements(blocks);
+document.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Escape') {
+    bigPicture.classList.add('hidden');
+  }
+});
+var bigPictureCloseButton = bigPicture.querySelector('#picture-cancel');
+var closeButtonHandler = function () {
+  bigPicture.classList.add('hidden');
+};
+
+bigPictureCloseButton.addEventListener('click', closeButtonHandler);
+
+
 var modalOpen = document.querySelector('body');
-modalOpen.classList.add('modal-open');
-
-
+var fieldUploadFile = document.querySelector('#upload-file');
+var editingForm = modalOpen.querySelector('.img-upload__overlay');
+var closeButtonEscPress = function (evt) {
+  if (evt.key === ESC_KEY) {
+    closeEditingForm();
+  }
+};
+var openEditingForm = function () {
+  editingForm.classList.remove('hidden');
+  document.addEventListener('keydown', closeButtonEscPress);
+  modalOpen.classList.add('modal-open');
+};
+var closeEditingForm = function () {
+  editingForm.classList.add('hidden');
+  document.removeEventListener('keydown', closeButtonEscPress);
+  modalOpen.classList.remove('modal-open');
+};
+fieldUploadFile.addEventListener('change', openEditingForm);
+var closeButtonEditingForm = editingForm.querySelector('#upload-cancel');
+closeButtonEditingForm.addEventListener('click', closeEditingForm);
+var scaleControlValue = editingForm.querySelector('.scale__control--value');
+scaleControlValue.value = SCALE_DEFAULT + ' %';
+var scaleControlSmaller = editingForm.querySelector('.scale__control--smaller');
+var scaleControlBigger = editingForm.querySelector('.scale__control--bigger');
+var buttonScaleControlBigger = function () {
+  scaleControlValue.value += SCALE_STEP;
+};
+var buttonScaleControlSmaller = function () {
+  scaleControlValue.value -= SCALE_STEP;
+};
+scaleControlBigger.addEventListener('click', buttonScaleControlBigger);
+scaleControlSmaller.addEventListener('click', buttonScaleControlSmaller);
