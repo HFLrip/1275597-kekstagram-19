@@ -7,6 +7,7 @@ var MAX_QUANT_OF_COMMENTS = 3;
 var ESC_KEY = 'Escape';
 var SCALE_STEP = 25;
 var SCALE_DEFAULT = 100;
+var PIN_DEFAULT = 100;
 
 var namesOfCommentator = ['Артем', 'Коля', 'Dima', 'Petr'];
 var messages = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
@@ -127,6 +128,7 @@ var scaleControlSmaller = editingForm.querySelector('.scale__control--smaller');
 var scaleControlBigger = editingForm.querySelector('.scale__control--bigger');
 var imgUploadPreviewContainer = editingForm.querySelector('.img-upload__preview');
 var imgUploadPreview = imgUploadPreviewContainer.querySelector('img');
+
 var buttonScaleControlBigger = function () {
   if (scaleOfImg < SCALE_DEFAULT) {
     scaleOfImg += SCALE_STEP;
@@ -143,6 +145,7 @@ var buttonScaleControlSmaller = function () {
 };
 scaleControlBigger.addEventListener('click', buttonScaleControlBigger);
 scaleControlSmaller.addEventListener('click', buttonScaleControlSmaller);
+
 var effectLevelPin = editingForm.querySelector('.effect-level__pin');
 var effectLevelValue = editingForm.querySelector('.effect-level__value');
 var effectsList = editingForm.querySelector('.effects__list');
@@ -153,73 +156,124 @@ var effectMarvin = effectsList.querySelector('#effect-marvin');
 var effectsPhobos = effectsList.querySelector('#effect-phobos');
 var effectsheat = effectsList.querySelector('#effect-heat');
 var imgUploadEffectLevel = editingForm.querySelector('.img-upload__effect-level');
+var filter = '';
+var pinValue = PIN_DEFAULT;
+imgUploadEffectLevel.classList.add('hidden');
+
 var addEffectsPreviewChrome = function () {
+  filter = 'chrome';
   imgUploadEffectLevel.classList.remove('hidden');
   imgUploadPreview.classList.add('effects__preview--chrome');
-  if (effectLevelValue.value < 50) {
-    imgUploadPreview.style.filter = 'grayscale(1)';
-  } else {
-    imgUploadPreview.style.filter = 'grayscale(0)';
-  }
+  pinValue = PIN_DEFAULT / 100;
+  imgUploadPreview.style.filter = 'grayscale(' + pinValue + ')';
   imgUploadPreview.classList.remove('effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
+  effectLevelPin.addEventListener('mouseup', radioChangeFilter);
 };
 var addEffectsPreviewNone = function () {
-  imgUploadEffectLevel.classList.add('hidden');
+  filter = 'none';
   imgUploadPreview.classList.add('effects__preview--none');
   imgUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
   imgUploadPreview.style.filter = '';
 };
 var addEffectsPreviewSepia = function () {
+  filter = 'sepia';
   imgUploadEffectLevel.classList.remove('hidden');
   imgUploadPreview.classList.add('effects__preview--sepia');
-  if (effectLevelValue.value < 50) {
-    imgUploadPreview.style.filter = 'sepia(1)';
-  } else {
-    imgUploadPreview.style.filter = 'sepia(0)';
-  }
+  pinValue = PIN_DEFAULT / 100;
+  imgUploadPreview.style.filter = 'sepia(' + pinValue + ')';
   imgUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat');
+  effectLevelPin.addEventListener('mouseup', radioChangeFilter);
 };
 var addEffectsPreviewMarvin = function () {
+  filter = 'marvin';
   imgUploadEffectLevel.classList.remove('hidden');
   imgUploadPreview.classList.add('effects__preview--marvin');
-  imgUploadPreview.style.filter = 'invert(' + effectLevelValue.value + '%)';
+  imgUploadPreview.style.filter = 'invert(' + PIN_DEFAULT + '%)';
   imgUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--phobos', 'effects__preview--heat');
+  effectLevelPin.addEventListener('mouseup', radioChangeFilter);
 };
 var addEffectsPreviewPhobos = function () {
+  filter = 'phobos';
   imgUploadEffectLevel.classList.remove('hidden');
   imgUploadPreview.classList.add('effects__preview--phobos');
-  if (effectLevelValue.value >= 0 && effectLevelValue.value <= 25) {
-    imgUploadPreview.style.filter = 'blur(0)';
-  }
-  if (effectLevelValue.value > 25 && effectLevelValue.value <= 50) {
-    imgUploadPreview.style.filter = 'blur(1)';
-  }
-  if (effectLevelValue.value > 50 && effectLevelValue.value <= 75) {
-    imgUploadPreview.style.filter = 'blur(2)';
-  }
-  if (effectLevelValue.value > 75 && effectLevelValue.value <= 100) {
-    imgUploadPreview.style.filter = 'blur(3)';
-  }
+  pinValue = PIN_DEFAULT * 3 / 100;
+  imgUploadPreview.style.filter = 'blur(' + pinValue + 'px)';
   imgUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--heat');
+  effectLevelPin.addEventListener('mouseup', radioChangeFilter);
 };
 var addEffectsPreviewHeat = function () {
+  filter = 'heat';
   imgUploadEffectLevel.classList.remove('hidden');
   imgUploadPreview.classList.add('effects__preview--heat');
-  imgUploadPreview.style.filter = 'brightness(1)';
-  if (effectLevelValue.value > 33 && effectLevelValue.value <= 66) {
-    imgUploadPreview.style.filter = 'brightness(2)';
-  }
-  if (effectLevelValue.value > 66 && effectLevelValue.value <= 100) {
-    imgUploadPreview.style.filter = 'brightness(3)';
-  }
+  pinValue = 1 + PIN_DEFAULT * 2 / 100;
+  imgUploadPreview.style.filter = 'brightness(' + pinValue + ')';
   imgUploadPreview.classList.remove('effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos');
+  effectLevelPin.addEventListener('mouseup', radioChangeFilter);
 };
+
 effectChrome.addEventListener('change', addEffectsPreviewChrome);
 effectNone.addEventListener('change', addEffectsPreviewNone);
 effectSepia.addEventListener('change', addEffectsPreviewSepia);
 effectMarvin.addEventListener('change', addEffectsPreviewMarvin);
 effectsPhobos.addEventListener('change', addEffectsPreviewPhobos);
 effectsheat.addEventListener('change', addEffectsPreviewHeat);
-// effectLevelPin.addEventListener('mouseup', )
 
+var radioChangeFilter = function () {
+  if (filter === 'none') {
+    addEffectsPreviewNone();
+  } else if (filter === 'chrome') {
+    pinValue = effectLevelValue.value / 100;
+    imgUploadPreview.style.filter = 'grayscale(' + pinValue + ')';
+  } else if (filter === 'sepia') {
+    pinValue = effectLevelValue.value / 100;
+    imgUploadPreview.style.filter = 'sepia(' + pinValue + ')';
+  } else if (filter === 'marvin') {
+    imgUploadPreview.style.filter = 'invert(' + effectLevelValue.value + '%)';
+  } else if (filter === 'phobos') {
+    pinValue = effectLevelValue.value * 3 / 100;
+    imgUploadPreview.style.filter = 'blur(' + pinValue + 'px)';
+  } else if (filter === 'heat') {
+    pinValue = 1 + effectLevelValue.value * 2 / 100;
+    imgUploadPreview.style.filter = 'brightness(' + pinValue + ')';
+  }
+};
+var MIN_LENGTH = 0;
+var MAX_LENGTH = 20;
+var imgUploadText = document.querySelector('.img-upload__text');
+var textInputHashtag = imgUploadText.querySelector('.text__hashtags');
+textInputHashtag.pattern = '^#[a-zа-яё0-9]{0,20}';
+textInputHashtag.minlength = MIN_LENGTH;
+textInputHashtag.maxlength = MAX_LENGTH;
+var inputHashtagCheck = function () {
+  textInputHashtag.setCustomValidity('Веедите корректно хэш-тег, например "#хэш-тег"');
+  var inputHashtagText = textInputHashtag.value;
+  var imgUploadHashtags = inputHashtagText.split(' ');
+  for (var i = 0; i < imgUploadHashtags.length; i++) {
+    if (imgUploadHashtags[i] === imgUploadHashtags[i + 1]) {
+      textInputHashtag.setCustomValidity('Вы ввели одинаковый хэш-тег, хэш-тег не должен повторятся');
+    }
+  }
+};
+textInputHashtag.addEventListener('input', inputHashtagCheck);
+/*
+var InputHashtagHandler = function (evt) {
+  imgInputHashtag.setCustomValidity('');
+  var errorMessage = inputHashtagCheck();
+  if (errorMessage) {
 
+  }
+}
+imgInputHashtag.addEventListener('input', InputHashtagCheck);
+var onHashtagsInput = function (evt) {
+  textHashtags.setCustomValidity('');
+  textHashtags.style.background = '';
+  textHashtags.style.outline = '';
+  var errorMessage = checkHashTag(myparams); // здесь вызывается функция, которая проверяет хэш тег и возвращает текст ошибки после проверки или пустую строку
+  if (errorMessage) {
+    textHashtags.setCustomValidity(errorMessage);
+    textHashtags.style.background = INVALID_COLOR;
+    textHashtags.style.outline = INVALID_STYLE;
+  }
+  textHashtags.reportValidity();
+}
+*/
