@@ -241,39 +241,47 @@ var MIN_LENGTH = 0;
 var MAX_LENGTH = 20;
 var imgUploadText = document.querySelector('.img-upload__text');
 var textInputHashtag = imgUploadText.querySelector('.text__hashtags');
-textInputHashtag.pattern = '^#[a-zа-яё0-9]{0,20}';
-textInputHashtag.minlength = MIN_LENGTH;
-textInputHashtag.maxlength = MAX_LENGTH;
-var inputHashtagCheck = function () {
-  textInputHashtag.setCustomValidity('Веедите корректно хэш-тег, например "#хэш-тег"');
-  var inputHashtagText = textInputHashtag.value;
-  var imgUploadHashtags = inputHashtagText.split(' ');
-  for (var i = 0; i < imgUploadHashtags.length; i++) {
-    if (imgUploadHashtags[i] === imgUploadHashtags[i + 1]) {
-      textInputHashtag.setCustomValidity('Вы ввели одинаковый хэш-тег, хэш-тег не должен повторятся');
+var textLineHashtag = textInputHashtag.value;
+
+var getFullHashtags = function (text) {
+  var hashtags = text.split(' ', 5);
+  return hashtags;
+};
+
+var checkHashTag = function () {
+  var letters = [];
+  var array = getFullHashtags(textLineHashtag);
+  for (var t = 0; t < array.length; t++) {
+    if (array[t] === array[t + 1]) {
+      return 'один и тот же хэш-тег не может быть использован дважды';
+    }
+    letters = array[t].split('', MAX_LENGTH);
+    for (var j = 0; j < letters.length; j++) {
+      if (letters[j + 1] === '') {
+        return 'Хэштег не должен состоять только из #';
+      } else if (letters[j + 1] === '#') {
+        return 'Разделите хэштеги пробелом';
+      }
     }
   }
+  return '';
 };
-textInputHashtag.addEventListener('input', inputHashtagCheck);
-/*
-var InputHashtagHandler = function (evt) {
-  imgInputHashtag.setCustomValidity('');
-  var errorMessage = inputHashtagCheck();
-  if (errorMessage) {
 
-  }
-}
-imgInputHashtag.addEventListener('input', InputHashtagCheck);
 var onHashtagsInput = function (evt) {
-  textHashtags.setCustomValidity('');
-  textHashtags.style.background = '';
-  textHashtags.style.outline = '';
-  var errorMessage = checkHashTag(myparams); // здесь вызывается функция, которая проверяет хэш тег и возвращает текст ошибки после проверки или пустую строку
+  textInputHashtag.setCustomValidity('');
+  var errorMessage = checkHashTag(); // здесь вызывается функция, которая проверяет хэш тег и возвращает текст ошибки после проверки или пустую строку
   if (errorMessage) {
-    textHashtags.setCustomValidity(errorMessage);
-    textHashtags.style.background = INVALID_COLOR;
-    textHashtags.style.outline = INVALID_STYLE;
+    textInputHashtag.setCustomValidity(errorMessage);
   }
-  textHashtags.reportValidity();
-}
-*/
+  textInputHashtag.reportValidity();
+};
+
+var onHashtagsInvalid = function (evt) {
+  if (textInputHashtag.validity.tooShort) {
+    textInputHashtag.setCustomValidity('Очень короткий');
+  } else if (textInputHashtag.validity.tooLong) {
+    textInputHashtag.setCustomValidity('Очень длинный');
+  }
+};
+textInputHashtag.addEventListener('input', onHashtagsInput);
+textInputHashtag.addEventListener('invalid', onHashtagsInvalid);
