@@ -239,27 +239,37 @@ var radioChangeFilter = function () {
 };
 var MIN_LENGTH = 0;
 var MAX_LENGTH = 20;
+var MAX_QUANTITY_OF_HASHTAGS = 5;
 var imgUploadText = document.querySelector('.img-upload__text');
 var textInputHashtag = imgUploadText.querySelector('.text__hashtags');
-var textLineHashtag = textInputHashtag.value;
+textInputHashtag.maxlength = MAX_LENGTH;
+textInputHashtag.minlength = MIN_LENGTH;
+
 
 var getFullHashtags = function (text) {
-  var hashtags = text.split(' ', 5);
+  var hashtags = text.split(' ');
   return hashtags;
 };
 
 var checkHashTag = function () {
+  var textLineHashtag = textInputHashtag.value;
   var letters = [];
   var array = getFullHashtags(textLineHashtag);
-  for (var t = 0; t < array.length; t++) {
-    if (array[t] === array[t + 1]) {
+  if (array.length > MAX_QUANTITY_OF_HASHTAGS) {
+    return 'Максимальное количество хэштегов - 5';
+  } else if (array[0] === '#') {
+    return 'Хэштег не должен состоять только из #';
+  }
+  for (var t = 0; t < array.length - 1; t++) {
+    letters = array[t].split('');
+    var idx = array.indexOf(array[t], array[t + 1]);
+    if (idx !== -1) {
       return 'один и тот же хэш-тег не может быть использован дважды';
+    } else if (array[t] === '#') {
+      return 'Хэштег не должен состоять только из #';
     }
-    letters = array[t].split('', MAX_LENGTH);
     for (var j = 0; j < letters.length; j++) {
-      if (letters[j + 1] === '') {
-        return 'Хэштег не должен состоять только из #';
-      } else if (letters[j + 1] === '#') {
+      if (letters[j + 1] === '#') {
         return 'Разделите хэштеги пробелом';
       }
     }
