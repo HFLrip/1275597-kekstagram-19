@@ -262,7 +262,7 @@ var checkHashTag = function () {
   }
   for (var t = 0; t < array.length - 1; t++) {
     letters = array[t].split('');
-    var idx = array.indexOf(array[t], array[t + 1]);
+    var idx = array.indexOf(array[t], t + 1);
     if (idx !== -1) {
       return 'один и тот же хэш-тег не может быть использован дважды';
     } else if (array[t] === '#') {
