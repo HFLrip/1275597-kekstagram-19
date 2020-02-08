@@ -253,20 +253,25 @@ var getFullHashtags = function (text) {
 
 var checkHashTag = function () {
   var textLineHashtag = textInputHashtag.value;
+  textLineHashtag.toLowerCase();
   var letters = [];
   var array = getFullHashtags(textLineHashtag);
   if (array.length > MAX_QUANTITY_OF_HASHTAGS) {
     return 'Максимальное количество хэштегов - 5';
-  } else if (array[0] === '#') {
-    return 'Хэштег не должен состоять только из #';
   }
-  for (var t = 0; t < array.length - 1; t++) {
+  for (var t = 0; t < array.length; t++) {
     letters = array[t].split('');
     var idx = array.indexOf(array[t], t + 1);
     if (idx !== -1) {
       return 'один и тот же хэш-тег не может быть использован дважды';
     } else if (array[t] === '#') {
       return 'Хэштег не должен состоять только из #';
+    } else if (letters[0] !== '#') {
+      return 'Хэштег начинается с #';
+    } else if (letters.length > MAX_LENGTH) {
+      return 'Максимальное количество символов - 20';
+    } else if (array[t].search(/[a-zа-яё0-9]/) === -1) {
+      return 'хэштег не может содержать спецсимволы';
     }
     for (var j = 0; j < letters.length; j++) {
       if (letters[j + 1] === '#') {
