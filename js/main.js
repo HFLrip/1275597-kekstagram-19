@@ -252,8 +252,7 @@ var getFullHashtags = function (text) {
 };
 
 var checkHashTag = function () {
-  var textLineHashtag = textInputHashtag.value;
-  textLineHashtag.toLowerCase();
+  var textLineHashtag = textInputHashtag.value.toLowerCase();
   var letters = [];
   var array = getFullHashtags(textLineHashtag);
   if (array.length > MAX_QUANTITY_OF_HASHTAGS) {
@@ -270,12 +269,14 @@ var checkHashTag = function () {
       return 'Хэштег начинается с #';
     } else if (letters.length > MAX_LENGTH) {
       return 'Максимальное количество символов - 20';
-    } else if (array[t].search(/[a-zа-яё0-9]/) === -1) {
-      return 'хэштег не может содержать спецсимволы';
     }
     for (var j = 0; j < letters.length; j++) {
       if (letters[j + 1] === '#') {
         return 'Разделите хэштеги пробелом';
+      } else if (letters[j].search(/[#a-zа-яё0-9]/) === -1) {
+        return 'хэштег не может содержать спецсимволы';
+      } else if (letters[0] !== '#') {
+        return 'Хэштег начинается с #';
       }
     }
   }
@@ -300,3 +301,4 @@ var onHashtagsInvalid = function (evt) {
 };
 textInputHashtag.addEventListener('input', onHashtagsInput);
 textInputHashtag.addEventListener('invalid', onHashtagsInvalid);
+
