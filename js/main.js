@@ -1,4 +1,6 @@
 'use strict';
+// data.js
+
 var QUANTITY_OF_DESCRIPTIONS = 25;
 var MIN_NUMB_OF_LIKES = 15;
 var MAX_NUMB_OF_LIKES = 200;
@@ -41,6 +43,9 @@ var generatePhotoDescription = function (count) {
 for (var i = 0; i < QUANTITY_OF_DESCRIPTIONS; i++) {
   photoDescriptions [i] = generatePhotoDescription(i);
 }
+
+// picture.js
+
 var photoList = document.querySelector('.pictures'); // контейнер для фото по классу
 var template = document.querySelector('#picture').content;
 var pictureElement = template.querySelector('a');
@@ -57,6 +62,8 @@ var pushDescriptionsInDom = function (photo) {
   }
 };
 pushDescriptionsInDom(photoDescriptions);
+
+// preview.js
 
 var bigPicture = document.querySelector('.big-picture');
 bigPicture.classList.remove('hidden');
@@ -78,6 +85,9 @@ for (var k = 0; k < photoDescriptions[0].comments.length; k++) {
   textComment.textContent = photoDescriptions[0].comments[k].message;
   commentItem.appendChild(textComment);
 }
+
+// вынес его в data
+
 var blocks = document.querySelectorAll('.social__comment-count');
 var newComments = document.querySelectorAll('.comments-loader');
 var hideElements = function (elements) {
@@ -87,6 +97,9 @@ var hideElements = function (elements) {
 };
 hideElements(newComments);
 hideElements(blocks);
+
+// form.js
+
 document.addEventListener('keydown', function (evt) {
   if (evt.key === 'Escape') {
     bigPicture.classList.add('hidden');
@@ -237,6 +250,9 @@ var radioChangeFilter = function () {
     imgUploadPreview.style.filter = 'brightness(' + pinValue + ')';
   }
 };
+
+// validity.js
+
 var MIN_LENGTH = 0;
 var MAX_LENGTH = 20;
 var MAX_QUANTITY_OF_HASHTAGS = 5;
