@@ -1,10 +1,10 @@
 'use strict';
 (function () {
-  var QUANTITY_OF_DESCRIPTIONS = 25;
-  var MIN_NUMB_OF_LIKES = 15;
-  var MAX_NUMB_OF_LIKES = 200;
-  var MAX_AVAILABLE_QUANT_OF_AVATARS = 6;
-  var MAX_QUANT_OF_COMMENTS = 3;
+//  var QUANTITY_OF_DESCRIPTIONS = 25;
+//  var MIN_NUMB_OF_LIKES = 15;
+//  var MAX_NUMB_OF_LIKES = 200;
+//  var MAX_AVAILABLE_QUANT_OF_AVATARS = 6;
+//  var MAX_QUANT_OF_COMMENTS = 3;
   var ESC_KEY = 'Escape';
   var SCALE_STEP = 25;
   var SCALE_DEFAULT = 100;
@@ -12,9 +12,10 @@
   var MIN_LENGTH = 0;
   var MAX_LENGTH = 20;
   var MAX_QUANTITY_OF_HASHTAGS = 5;
-  var namesOfCommentator = ['Артем', 'Коля', 'Dima', 'Petr'];
-  var messages = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
-  var photoDescriptions = [];
+//  var namesOfCommentator = ['Артем', 'Коля', 'Dima', 'Petr'];
+//  var messages = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+  var photoDescriptions = window.request.xhr;
+/*
   var getRandomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
@@ -44,6 +45,7 @@
   for (var i = 0; i < QUANTITY_OF_DESCRIPTIONS; i++) {
     photoDescriptions [i] = generatePhotoDescription(i);
   }
+*/
   var blocks = document.querySelectorAll('.social__comment-count');
   var newComments = document.querySelectorAll('.comments-loader');
   var hideElements = function (elements) {

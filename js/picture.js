@@ -15,5 +15,5 @@
       photoList.appendChild(clonedPictureElement);
     }
   };
-  pushDescriptionsInDom(window.data.photoDescriptions);
+  pushDescriptionsInDom(window.data.photoDescriptions.response);
 })();
