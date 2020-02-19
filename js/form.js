@@ -1,16 +1,5 @@
 'use strict';
 (function () {
-  var bigPicture = document.querySelector('.big-picture');
-  document.addEventListener('keydown', function (evt) {
-    if (evt.key === window.data.ESC_KEY) {
-      bigPicture.classList.add('hidden');
-    }
-  });
-  var bigPictureCloseButton = bigPicture.querySelector('#picture-cancel');
-  var closeButtonHandler = function () {
-    bigPicture.classList.add('hidden');
-  };
-  bigPictureCloseButton.addEventListener('click', closeButtonHandler);
   var modalOpen = document.querySelector('body');
   var fieldUploadFile = document.querySelector('#upload-file');
   var editingForm = modalOpen.querySelector('.img-upload__overlay');

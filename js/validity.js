@@ -43,7 +43,7 @@
     return '';
   };
 
-  var onHashtagsInput = function (evt) {
+  var onHashtagsInput = function () {
     textInputHashtag.setCustomValidity('');
     var errorMessage = checkHashTag(); // здесь вызывается функция, которая проверяет хэш тег и возвращает текст ошибки после проверки или пустую строку
     if (errorMessage) {
@@ -52,7 +52,7 @@
     textInputHashtag.reportValidity();
   };
 
-  var onHashtagsInvalid = function (evt) {
+  var onHashtagsInvalid = function () {
     if (textInputHashtag.validity.tooShort) {
       textInputHashtag.setCustomValidity('Очень короткий');
     } else if (textInputHashtag.validity.tooLong) {
